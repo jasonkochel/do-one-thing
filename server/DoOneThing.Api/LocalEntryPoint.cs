@@ -3,9 +3,6 @@ using Microsoft.Extensions.Hosting;
 
 namespace DoOneThing.Api
 {
-    /// <summary>
-    /// The Main function can be used to run the ASP.NET Core application locally using the Kestrel web server.
-    /// </summary>
     public class LocalEntryPoint
     {
         public static void Main(string[] args)

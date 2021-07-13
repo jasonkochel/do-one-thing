@@ -10,11 +10,11 @@ namespace DoOneThing.Api.Controllers
         [HttpGet]
         public IEnumerable<string> Get()
         {
-            return new[] { "value1", "value2" };
+            return new[] {"value1", "value2"};
         }
 
         // GET api/values/5
-        [HttpGet("{id}")]
+        [HttpGet("{id:int}")]
         public string Get(int id)
         {
             return "value";
@@ -22,18 +22,18 @@ namespace DoOneThing.Api.Controllers
 
         // POST api/values
         [HttpPost]
-        public void Post([FromBody]string value)
+        public void Post([FromBody] string value)
         {
         }
 
         // PUT api/values/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody]string value)
+        [HttpPut("{id:int}")]
+        public void Put(int id, [FromBody] string value)
         {
         }
 
         // DELETE api/values/5
-        [HttpDelete("{id}")]
+        [HttpDelete("{id:int}")]
         public void Delete(int id)
         {
         }
