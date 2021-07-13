@@ -1,3 +1,5 @@
+using DoOneThing.Api.Controllers.Middleware;
+using DoOneThing.Api.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -15,13 +17,23 @@ namespace DoOneThing.Api
 
         public static IConfiguration Configuration { get; private set; }
 
-        // This method gets called by the runtime. Use this method to add services to the container
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers();
+            services.AddControllers(options =>
+            {
+                options.Filters.Add(typeof(AuthorizationFilter));
+                options.Filters.Add(typeof(ExceptionHandlerFilter));
+            });
+
+            services.Configure<AppSettings>(Configuration);
+            
+            services.AddHttpClient();
+
+            services.AddScoped<GoogleTaskService, GoogleTaskService>();
+            services.AddScoped<GoogleApiService, GoogleApiService>();
+            services.AddScoped<RequestHeaders, RequestHeaders>();
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
@@ -30,9 +42,7 @@ namespace DoOneThing.Api
             }
 
             app.UseHttpsRedirection();
-
             app.UseRouting();
-
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

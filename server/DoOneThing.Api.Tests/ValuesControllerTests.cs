@@ -15,7 +15,7 @@ namespace DoOneThing.Api.Tests
         {
             var lambdaFunction = new LambdaEntryPoint();
 
-            var requestStr = await File.ReadAllTextAsync("./SampleRequests/ValuesController-Get.json");
+            var requestStr = await File.ReadAllTextAsync("./SampleRequests/TasksController-Get.json");
             var request = JsonConvert.DeserializeObject<APIGatewayHttpApiV2ProxyRequest>(requestStr);
 
             var context = new TestLambdaContext();
