@@ -25,6 +25,15 @@ namespace DoOneThing.Api
                 options.Filters.Add(typeof(ExceptionHandlerFilter));
             });
 
+            services.AddCors(options =>
+            {
+                options.AddDefaultPolicy(
+                    builder =>
+                    {
+                        builder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod();
+                    });
+            });
+
             services.Configure<AppSettings>(Configuration);
             
             services.AddHttpClient();
@@ -43,6 +52,7 @@ namespace DoOneThing.Api
 
             app.UseHttpsRedirection();
             app.UseRouting();
+            app.UseCors();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

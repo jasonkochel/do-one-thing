@@ -15,12 +15,7 @@ namespace DoOneThing.Api.Controllers.Middleware
         private static string GetAccessToken(ActionContext context)
         {
             var authHeader = context.HttpContext.Request.Headers["Authorization"].ToString();
-            if (!authHeader.StartsWith("Bearer"))
-            {
-                throw new UnauthorizedException("Invalid Authorization Header");
-            }
-
-            return authHeader[7..];
+            return authHeader.StartsWith("Bearer") ? authHeader[7..] : null;
         }
     }
 

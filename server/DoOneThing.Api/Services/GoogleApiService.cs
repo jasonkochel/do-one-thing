@@ -39,8 +39,7 @@ namespace DoOneThing.Api.Services
 
             if (res.StatusCode == HttpStatusCode.Unauthorized)
             {
-                _requestHeaders.AccessToken = await RefreshAccessToken();
-                res = await MakeHttpRequest<T>(url, method, reqData);
+                throw new UnauthorizedException("Invalid or expired access token");
             }
 
             res.EnsureSuccessStatusCode();
@@ -63,18 +62,31 @@ namespace DoOneThing.Api.Services
             });
         }
 
-        private async Task<string> RefreshAccessToken()
+        public async Task<GoogleAuthResponseModel> GetAccessToken(string authorizationCode)
         {
             var reqData = new
             {
                 _appSettings.GoogleCredentials.client_id,
                 _appSettings.GoogleCredentials.client_secret,
-                refresh_token = _requestHeaders.RefreshToken,
+                _appSettings.GoogleCredentials.redirect_uri,
+                code = authorizationCode,
+                grant_type = "authorization_code"
+            };
+
+            return await MakeRequest<GoogleAuthResponseModel>("https://oauth2.googleapis.com/token", HttpMethod.Post, reqData);
+        }
+
+        public async Task<GoogleAuthResponseModel> RefreshAccessToken(string refreshToken)
+        {
+            var reqData = new
+            {
+                _appSettings.GoogleCredentials.client_id,
+                _appSettings.GoogleCredentials.client_secret,
+                refresh_token = refreshToken,
                 grant_type = "refresh_token"
             };
 
-            var resData = await MakeRequest<GoogleAuthResponseModel>("https://oauth2.googleapis.com/token", HttpMethod.Post, reqData);
-            return resData.access_token;
+            return await MakeRequest<GoogleAuthResponseModel>("https://oauth2.googleapis.com/token", HttpMethod.Post, reqData);
         }
     }
 }
