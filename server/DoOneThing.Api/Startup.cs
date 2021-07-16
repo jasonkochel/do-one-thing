@@ -42,9 +42,12 @@ namespace DoOneThing.Api
 
             services.AddHttpClient();
 
+            services.AddScoped<RequestHeaders, RequestHeaders>();
+
             services.AddScoped<GoogleTaskService, GoogleTaskService>();
             services.AddScoped<GoogleApiService, GoogleApiService>();
-            services.AddScoped<RequestHeaders, RequestHeaders>();
+            services.AddScoped<TagService, TagService>();
+
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

@@ -17,8 +17,6 @@ namespace DoOneThing.Api.Services
         private readonly AppSettings _appSettings;
         private readonly IHttpClientFactory _clientFactory;
 
-        // verify access token: GET https://www.googleapis.com/oauth2/v1/tokeninfo?access_token=accessToken
-
         public GoogleApiService(RequestHeaders requestHeaders, IOptions<AppSettings> settings, IHttpClientFactory clientFactory)
         {
             _requestHeaders = requestHeaders;

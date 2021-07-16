@@ -22,6 +22,5 @@ namespace DoOneThing.Api.Controllers.Middleware
     public class RequestHeaders
     {
         public string AccessToken { get; set; }
-        public string RefreshToken { get; set; }
     }
 }

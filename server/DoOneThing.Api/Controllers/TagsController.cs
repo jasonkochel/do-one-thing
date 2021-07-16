@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace DoOneThing.Api.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/[controller]/{listId}")]
     public class TagsController : ControllerBase
     {
         private readonly TagService _service;
@@ -15,22 +15,22 @@ namespace DoOneThing.Api.Controllers
             _service = service;
         }
 
-        [HttpGet("listId")]
+        [HttpGet]
         public async Task<List<string>> Get(string listId)
         {
             return await _service.GetAllForList(listId);
         }
 
-        [HttpPost("{listId}/{tag}")]
-        public async Task Post(string listId, string tag)
+        [HttpPost("{tag}")]
+        public async Task<List<string>> Post(string listId, string tag)
         {
-            await _service.Add(listId, tag);
+           return await _service.Add(listId, tag);
         }
 
-        [HttpDelete("{listId}/{tag}")]
-        public async Task Delete(string listId, string tag)
+        [HttpDelete("{tag}")]
+        public async Task<List<string>> Delete(string listId, string tag)
         {
-            await _service.Delete(listId, tag);
+            return await _service.Delete(listId, tag);
         }
     }
 }
