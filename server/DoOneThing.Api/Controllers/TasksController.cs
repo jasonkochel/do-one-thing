@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using DoOneThing.Api.Models;
@@ -31,16 +32,19 @@ namespace DoOneThing.Api.Controllers
         [HttpPost]
         public void Post([FromBody] string value)
         {
+            throw new NotImplementedException();
         }
 
         [HttpPut("{id:int}")]
         public void Put(int id, [FromBody] string value)
         {
+            throw new NotImplementedException();
         }
 
         [HttpDelete("{id:int}")]
         public void Delete(int id)
         {
+            throw new NotImplementedException();
         }
     }
 }

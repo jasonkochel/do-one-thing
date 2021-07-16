@@ -1,3 +1,4 @@
+using Amazon.DynamoDBv2;
 using DoOneThing.Api.Controllers.Middleware;
 using DoOneThing.Api.Services;
 using Microsoft.AspNetCore.Builder;
@@ -35,7 +36,10 @@ namespace DoOneThing.Api
             });
 
             services.Configure<AppSettings>(Configuration);
-            
+
+            services.AddDefaultAWSOptions(Configuration.GetAWSOptions());
+            services.AddAWSService<IAmazonDynamoDB>();
+
             services.AddHttpClient();
 
             services.AddScoped<GoogleTaskService, GoogleTaskService>();

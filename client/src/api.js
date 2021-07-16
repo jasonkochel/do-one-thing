@@ -34,8 +34,6 @@ client.interceptors.response.use(
   }
 );
 
-// IDENTITIES
-
 const getAccessToken = (authorizationCode) =>
   client
     .post(
@@ -53,39 +51,24 @@ const getUserInfo = () => {
 };
 
 const getTaskLists = () => client.get("/tasks").then((res) => res.data);
+const getTasks = (listId) =>
+  client.get(`/tasks/${listId}`).then((res) => res.data);
+
+const getTags = (listId) =>
+  client.get(`/tags/${listId}`).then((res) => res.data);
+const createTag = (listId, tag) =>
+  client.post(`/tags/${listId}/${tag}`).then((res) => res.data);
+const deleteTag = (listId, tag) =>
+  client.delete(`/tags/${listId}/${tag}`).then((res) => res.data);
 
 const api = {
   getAccessToken,
   getUserInfo,
   getTaskLists,
+
+  getTags,
+  createTag,
+  deleteTag,
 };
 
 export default api;
-
-/*
-const getCategories = (includeItems = false, includeVirtual = false) =>
-  client
-    .get(
-      `/categories?includeItems=${includeItems}&includeVirtual=${includeVirtual}`
-    )
-    .then((res) => res.data);
-
-const getItemsByCategoryId = (categoryId) => {
-  const qs = categoryId ? `?categoryId=${categoryId}` : "";
-  return client.get("/catalog" + qs).then((res) => res.data);
-};
-
-const addCategory = (category) =>
-  client.post("/categories", category).then((res) => res.data);
-
-const updateCategory = (category) =>
-  client
-    .put(`/categories/${category.categoryId}`, category)
-    .then((res) => res.data);
-
-const deleteCategory = (id) => client.delete(`/categories/${id}`);
-
-const moveCategoryUp = (id) => client.patch(`/categories/${id}/up`);
-
-const moveCategoryDown = (id) => client.patch(`/categories/${id}/down`);
-*/

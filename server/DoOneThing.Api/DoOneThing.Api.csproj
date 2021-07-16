@@ -5,8 +5,9 @@
     <AWSProjectType>Lambda</AWSProjectType>
   </PropertyGroup>
   <ItemGroup>
+    <PackageReference Include="AWSSDK.DynamoDBv2" Version="3.7.0.43" />
     <PackageReference Include="AWSSDK.Extensions.NETCore.Setup" Version="3.7.0.1" />
-    <PackageReference Include="Amazon.Lambda.AspNetCoreServer" Version="6.0.2" />
-    <PackageReference Include="Google.Apis.Tasks.v1" Version="1.52.0.2231" />
+    <PackageReference Include="Amazon.Lambda.AspNetCoreServer" Version="6.0.3" />
+    <PackageReference Include="Google.Apis.Tasks.v1" Version="1.52.0.2384" />
   </ItemGroup>
 </Project>
