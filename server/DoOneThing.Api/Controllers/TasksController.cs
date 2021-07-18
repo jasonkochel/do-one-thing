@@ -10,41 +10,44 @@ namespace DoOneThing.Api.Controllers
     [Route("api/[controller]")]
     public class TasksController : ControllerBase
     {
-        private readonly GoogleTaskService _service;
+        private readonly GoogleTaskService _taskService;
+        private readonly TaskTagService _taskTagService;
 
-        public TasksController(GoogleTaskService service)
+        public TasksController(GoogleTaskService taskService, TaskTagService taskTagService)
         {
-            _service = service;
+            _taskService = taskService;
+            _taskTagService = taskTagService;
         }
 
         [HttpGet]
-        public async Task<List<GoogleTaskListModel>> Get()
+        public async Task<List<GoogleTaskListModel>> GetLists()
         {
-            return await _service.GetTaskLists();
+            return await _taskService.GetTaskLists();
         }
 
         [HttpGet("{listId}")]
-        public async Task<List<GoogleTaskModel>> Get(string listId)
+        public async Task<List<GoogleTaskModel>> GetTasks(string listId, [FromQuery] string tag = null)
         {
-            return await _service.GetTasks(listId);
+            // TODO: filter by tag
+            return await _taskService.GetTasks(listId);
         }
 
-        [HttpPost]
-        public void Post([FromBody] string value)
+        [HttpGet("{listId}/tasks/{taskId}/tags")]
+        public async Task<IEnumerable<string>> AddTag(string listId, string taskId)
         {
-            throw new NotImplementedException();
+            return await _taskTagService.GetTagsForTask(listId, taskId);
         }
 
-        [HttpPut("{id:int}")]
-        public void Put(int id, [FromBody] string value)
+        [HttpPost("{listId}/tasks/{taskId}/tags")]
+        public async Task<IEnumerable<string>> AddTag(string listId, string taskId, [FromQuery] string tag)
         {
-            throw new NotImplementedException();
+            return await _taskTagService.AddTagToTask(listId, taskId, tag);
         }
 
-        [HttpDelete("{id:int}")]
-        public void Delete(int id)
+        [HttpDelete("{listId}/tasks/{taskId}/tags")]
+        public async Task<IEnumerable<string>> RemoveTag(string listId, string taskId, [FromQuery] string tag)
         {
-            throw new NotImplementedException();
+            return await _taskTagService.RemoveTagFromTask(taskId, tag);
         }
     }
 }

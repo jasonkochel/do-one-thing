@@ -47,7 +47,7 @@ namespace DoOneThing.Api
             services.AddScoped<GoogleTaskService, GoogleTaskService>();
             services.AddScoped<GoogleApiService, GoogleApiService>();
             services.AddScoped<TagService, TagService>();
-
+            services.AddScoped<TaskTagService, TaskTagService>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

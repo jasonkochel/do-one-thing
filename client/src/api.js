@@ -55,16 +55,18 @@ const getTasks = (listId) =>
   client.get(`/tasks/${listId}`).then((res) => res.data);
 
 const getTags = (listId) =>
-  client.get(`/tags/${listId}`).then((res) => res.data);
+  client.get(`/lists/${listId}/tags`).then((res) => res.data);
 const createTag = (listId, tag) =>
-  client.post(`/tags/${listId}/${tag}`).then((res) => res.data);
+  client.post(`/lists/${listId}/tags/${tag}`).then((res) => res.data);
 const deleteTag = (listId, tag) =>
-  client.delete(`/tags/${listId}/${tag}`).then((res) => res.data);
+  client.delete(`/lists/${listId}/tags/${tag}`).then((res) => res.data);
 
 const api = {
   getAccessToken,
   getUserInfo,
+
   getTaskLists,
+  getTasks,
 
   getTags,
   createTag,

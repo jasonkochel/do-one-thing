@@ -2,17 +2,10 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Amazon.DynamoDBv2;
 using Amazon.DynamoDBv2.DataModel;
+using DoOneThing.Api.Models;
 
 namespace DoOneThing.Api.Services
 {
-    [DynamoDBTable("DoOneThing")]
-    public class Tags
-    {
-        public string PK { get; set; }
-        public string SK { get; set; }
-        public List<string> TagList { get; set; }
-    }
-
     public class TagService
     {
         private readonly DynamoDBContext _db;
@@ -33,12 +26,7 @@ namespace DoOneThing.Api.Services
 
         public async Task<List<string>> Add(string listId, string tag)
         {
-            var data = await LoadFromDb(listId) ?? new Tags
-            {
-                PK = $"TAGS#{listId}",
-                SK = $"TAGS#{listId}",
-                TagList = new List<string>()
-            };
+            var data = await LoadFromDb(listId) ?? new Tags(listId);
 
             if (!data.TagList.Contains(tag))
             {

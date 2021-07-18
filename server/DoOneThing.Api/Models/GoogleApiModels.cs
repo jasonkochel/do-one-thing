@@ -8,6 +8,11 @@ using System.Threading.Tasks;
 
 namespace DoOneThing.Api.Models
 {
+    public class GoogleTokenInfoResponseModel
+    {
+        public int expires_in { get; set; }
+    }
+
     public class GoogleAuthResponseModel
     {
         public string access_token { get; set; }

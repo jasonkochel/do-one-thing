@@ -7,11 +7,11 @@ using Xunit;
 
 namespace DoOneThing.Api.Tests
 {
-    public class TagServiceTests
+    public class TagTests
     {
         private readonly TagService _service;
 
-        public TagServiceTests()
+        public TagTests()
         {
             var client = new AmazonDynamoDBClient();
             _service = new TagService(client);
