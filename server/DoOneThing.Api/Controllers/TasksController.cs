@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using DoOneThing.Api.Models;
@@ -7,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace DoOneThing.Api.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/lists/{listId}/[controller]")]
     public class TasksController : ControllerBase
     {
         private readonly GoogleTaskService _taskService;
@@ -20,31 +19,24 @@ namespace DoOneThing.Api.Controllers
         }
 
         [HttpGet]
-        public async Task<List<GoogleTaskListModel>> GetLists()
-        {
-            return await _taskService.GetTaskLists();
-        }
-
-        [HttpGet("{listId}")]
         public async Task<List<GoogleTaskModel>> GetTasks(string listId, [FromQuery] string tag = null)
         {
-            // TODO: filter by tag
-            return await _taskService.GetTasks(listId);
+            return await _taskService.GetTasks(listId, tag);
         }
 
-        [HttpGet("{listId}/tasks/{taskId}/tags")]
+        [HttpGet("{taskId}/tags")]
         public async Task<IEnumerable<string>> AddTag(string listId, string taskId)
         {
             return await _taskTagService.GetTagsForTask(listId, taskId);
         }
 
-        [HttpPost("{listId}/tasks/{taskId}/tags")]
+        [HttpPost("{taskId}/tags")]
         public async Task<IEnumerable<string>> AddTag(string listId, string taskId, [FromQuery] string tag)
         {
             return await _taskTagService.AddTagToTask(listId, taskId, tag);
         }
 
-        [HttpDelete("{listId}/tasks/{taskId}/tags")]
+        [HttpDelete("{taskId}/tags")]
         public async Task<IEnumerable<string>> RemoveTag(string listId, string taskId, [FromQuery] string tag)
         {
             return await _taskTagService.RemoveTagFromTask(taskId, tag);

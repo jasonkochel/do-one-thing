@@ -18,19 +18,23 @@ namespace DoOneThing.Api.Controllers.Middleware
             var requestContext = (RequestHeaders)context.HttpContext.RequestServices.GetService(typeof(RequestHeaders));
             requestContext.AccessToken = GetAccessToken(context);
 
-            // even if the request will not be calling a Google API, use Google OAuth to authorize the entire request,
-            // thus preventing anonymous endpoints
-
-            var client = _clientFactory.CreateClient();
-            var request = new HttpRequestMessage(HttpMethod.Get, "https://www.googleapis.com/oauth2/v1/tokeninfo");
-
-            request.Headers.Add("Authorization", $"Bearer {requestContext.AccessToken}");
-
-            var response = client.SendAsync(request).Result;
-
-            if (!response.IsSuccessStatusCode)
+            // TODO: replace with [AllowAnonymous]
+            if (context.HttpContext.Request.Path != "/api/auth/refresh")
             {
-                throw new UnauthorizedException("Access token validation failed");
+                // even if the request will not be calling a Google API, use Google OAuth to authorize the entire request,
+                // thus preventing anonymous endpoints
+
+                var client = _clientFactory.CreateClient();
+                var request = new HttpRequestMessage(HttpMethod.Get, "https://www.googleapis.com/oauth2/v1/tokeninfo");
+
+                request.Headers.Add("Authorization", $"Bearer {requestContext.AccessToken}");
+
+                var response = client.SendAsync(request).Result;
+
+                if (!response.IsSuccessStatusCode)
+                {
+                    throw new UnauthorizedException("Access token validation failed");
+                }
             }
         }
 

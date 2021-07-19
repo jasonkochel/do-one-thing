@@ -2,11 +2,11 @@ import { useEffect, useState } from "react";
 import GoogleLogin from "react-google-login";
 import api from "./api";
 import "./App.css";
+import { TaskLists } from "./TaskLists";
 
 function App() {
   const [loggedIn, setLoggedIn] = useState(false);
   const [userInfo, setUserInfo] = useState();
-  const [taskLists, setTaskLists] = useState();
 
   useEffect(() => {
     const accessToken = localStorage.getItem("access_token");
@@ -18,11 +18,10 @@ function App() {
   useEffect(() => {
     if (loggedIn) {
       api.getUserInfo().then((res) => setUserInfo(res));
-      api.getTaskLists().then((res) => setTaskLists(res));
     }
   }, [loggedIn]);
 
-  const responseGoogle = async (response) => {
+  const handleGoogleResponse = async (response) => {
     const authorizationCode = response.code;
 
     if (authorizationCode) {
@@ -42,20 +41,13 @@ function App() {
     <div className="App">
       <header className="App-header">
         {loggedIn ? (
-          <>
-            <div>Hi {userInfo?.name}</div>
-            <ul>
-              {taskLists?.map((list) => (
-                <li key={list.id}>{list.title}</li>
-              ))}
-            </ul>
-          </>
+          <TaskLists userInfo={userInfo} />
         ) : (
           <GoogleLogin
             clientId="621831603836-ru5ohclu0c4frateq2cqn3ekofe686k5.apps.googleusercontent.com"
             buttonText="Login"
-            onSuccess={responseGoogle}
-            onFailure={responseGoogle}
+            onSuccess={handleGoogleResponse}
+            onFailure={handleGoogleResponse}
             cookiePolicy={"single_host_origin"}
             accessType="offline"
             responseType="code"

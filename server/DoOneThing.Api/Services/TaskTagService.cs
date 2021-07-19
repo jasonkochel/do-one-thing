@@ -26,6 +26,12 @@ namespace DoOneThing.Api.Services
             return tags.Select(t => t.Tag);
         }
 
+        public async Task<IEnumerable<string>> GetTasksForTag(string listId, string tag)
+        {
+            var tags = await QueryByTag(listId, tag) ?? new List<TaskTags>();
+            return tags.Select(t => t.TaskId);
+        }
+
         public async Task<IEnumerable<string>> AddTagToTask(string listId, string taskId, string tag)
         {
             var tags = await LoadFromDb(taskId) ?? new List<TaskTags>();
@@ -59,5 +65,12 @@ namespace DoOneThing.Api.Services
         private async Task<List<TaskTags>> LoadFromDb(string taskId) =>
             await _db.QueryAsync<TaskTags>($"TASK#{taskId}", QueryOperator.BeginsWith, new[] {"TAG#"})
                 .GetRemainingAsync();
+
+        private async Task<List<TaskTags>> QueryByTag(string listId, string tag) =>
+            await _db.QueryAsync<TaskTags>($"TAG#{listId}#{tag}", QueryOperator.BeginsWith, new[] {"TASK#"},
+                new DynamoDBOperationConfig
+                {
+                    IndexName = "GSI1"
+                }).GetRemainingAsync();
     }
 }

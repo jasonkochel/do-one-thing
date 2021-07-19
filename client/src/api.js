@@ -50,17 +50,40 @@ const getUserInfo = () => {
     .then((res) => res.data);
 };
 
-const getTaskLists = () => client.get("/tasks").then((res) => res.data);
-const getTasks = (listId) =>
-  client.get(`/tasks/${listId}`).then((res) => res.data);
+const getTaskLists = () => client.get("/lists").then((res) => res.data);
 
 const getTags = (listId) =>
   client.get(`/lists/${listId}/tags`).then((res) => res.data);
+
 const createTag = (listId, tag) =>
   client.post(`/lists/${listId}/tags/${tag}`).then((res) => res.data);
+
 const deleteTag = (listId, tag) =>
   client.delete(`/lists/${listId}/tags/${tag}`).then((res) => res.data);
 
+const getTasks = (listId, tag = null) => {
+  const qs = tag ? new URLSearchParams({ tag: tag }).toString() : "";
+  return client.get(`/lists/${listId}/tasks?${qs}`).then((res) => res.data);
+};
+
+const getTaskTags = (listId, taskId) =>
+  client.get(`/lists/${listId}/tasks/${taskId}/tags`).then((res) => res.data);
+
+const addTaskTag = (listId, taskId, tag) => {
+  const qs = tag ? new URLSearchParams({ tag: tag }).toString() : "";
+  return client
+    .post(`/lists/${listId}/tasks/${taskId}/tags?${qs}`)
+    .then((res) => res.data);
+};
+const deleteTaskTag = (listId, taskId, tag) => {
+  const qs = tag ? new URLSearchParams({ tag: tag }).toString() : "";
+  return client
+    .delete(
+      `/lists/${listId}/tasks/${taskId}/tags?${qs}`,
+      new URLSearchParams({ tag })
+    )
+    .then((res) => res.data);
+};
 const api = {
   getAccessToken,
   getUserInfo,
@@ -71,6 +94,10 @@ const api = {
   getTags,
   createTag,
   deleteTag,
+
+  getTaskTags,
+  addTaskTag,
+  deleteTaskTag,
 };
 
 export default api;

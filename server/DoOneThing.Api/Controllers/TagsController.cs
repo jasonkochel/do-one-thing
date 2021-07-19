@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace DoOneThing.Api.Controllers
 {
-    [Route("api/lists/{listId}/[controller]/")]
+    [Route("api/lists/{listId}/[controller]")]
     public class TagsController : ControllerBase
     {
         private readonly TagService _service;
