@@ -40,7 +40,11 @@ namespace DoOneThing.Api.Services
                 throw new UnauthorizedException("Invalid or expired access token");
             }
 
-            res.EnsureSuccessStatusCode();
+            if (!res.IsSuccessStatusCode)
+            {
+                var message = await res.Content.ReadAsStringAsync();
+                throw new BadRequestException(message);
+            }
 
             await using var responseStream = await res.Content.ReadAsStreamAsync();
             var resData = await JsonSerializer.DeserializeAsync<T>(responseStream);
@@ -60,13 +64,13 @@ namespace DoOneThing.Api.Services
             });
         }
 
-        public async Task<GoogleAuthResponseModel> GetAccessToken(string authorizationCode)
+        public async Task<GoogleAuthResponseModel> GetAccessToken(string authorizationCode, string redirectUri)
         {
             var reqData = new
             {
                 _appSettings.GoogleCredentials.client_id,
                 _appSettings.GoogleCredentials.client_secret,
-                _appSettings.GoogleCredentials.redirect_uri,
+                redirect_uri = redirectUri,
                 code = authorizationCode,
                 grant_type = "authorization_code"
             };

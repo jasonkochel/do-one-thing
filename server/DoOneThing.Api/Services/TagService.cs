@@ -38,7 +38,6 @@ namespace DoOneThing.Api.Services
             return data.TagList;
         }
 
-
         public async Task<List<string>> Delete(string listId, string tag)
         {
             var data = await LoadFromDb(listId);

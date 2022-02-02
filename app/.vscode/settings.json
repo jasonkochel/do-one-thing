@@ -1,3 +1,12 @@
 {
-  "git.ignoreLimitWarning": true
+  "git.ignoreLimitWarning": true,
+  "serverlessConsole.services": [
+    {
+      "type": "dynamodb",
+      "title": "DoOneThing",
+      "tableName": "DoOneThing",
+      "awsProfile": "default",
+      "region": "us-east-1"
+    }
+  ]
 }

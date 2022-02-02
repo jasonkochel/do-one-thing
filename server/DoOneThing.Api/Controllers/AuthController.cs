@@ -1,6 +1,7 @@
 using System.Threading.Tasks;
 using DoOneThing.Api.Models;
 using DoOneThing.Api.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DoOneThing.Api.Controllers
@@ -15,14 +16,16 @@ namespace DoOneThing.Api.Controllers
             _service = service;
         }
 
+        [AllowAnonymous]
         [HttpPost("token")]
         [Consumes("application/x-www-form-urlencoded")]
-        public async Task<GoogleAuthResponseModel> GetToken([FromForm] string authorizationCode)
+        public async Task<GoogleAuthResponseModel> GetToken([FromForm] string authorizationCode, [FromForm] string redirectUri)
 
         {
-            return await _service.GetAccessToken(authorizationCode);
+            return await _service.GetAccessToken(authorizationCode, redirectUri);
         }
 
+        [AllowAnonymous]
         [HttpPost("refresh")]
         [Consumes("application/x-www-form-urlencoded")]
         public async Task<GoogleAuthResponseModel> RefreshToken([FromForm] string refreshToken)

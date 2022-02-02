@@ -1,3 +1,4 @@
+using Amazon.CloudWatchEvents;
 using Amazon.DynamoDBv2;
 using DoOneThing.Api.Controllers.Middleware;
 using DoOneThing.Api.Services;
@@ -39,6 +40,7 @@ namespace DoOneThing.Api
 
             services.AddDefaultAWSOptions(Configuration.GetAWSOptions());
             services.AddAWSService<IAmazonDynamoDB>();
+            services.AddAWSService<IAmazonCloudWatchEvents>();
 
             services.AddHttpClient();
 
@@ -57,7 +59,7 @@ namespace DoOneThing.Api
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UseHttpsRedirection();
+            //app.UseHttpsRedirection();
             app.UseRouting();
             app.UseCors();
             app.UseAuthorization();
