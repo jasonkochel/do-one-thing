@@ -18,14 +18,18 @@ jobs:
         working-directory: ./server/DoOneThing.Api
     steps:
     - uses: actions/checkout@v2
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        role-to-assume: arn:aws:iam::016551291133:role/GithubActionsOIDC-Role-JTOVKGTXL79V
+        role-duration-seconds: 900
+        aws-region: us-east-1
     - name: Setup .NET
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: 3.1.x
     - name: Setup AWS SAM Tooling
       run: dotnet tool install -g Amazon.Lambda.Tools
-    - name: Restore dependencies
-      run: dotnet restore
     - name: Variable Substitution
       uses: microsoft/variable-substitution@v1
       with:
@@ -33,14 +37,6 @@ jobs:
       env:
         GoogleCredentials.client_id: ${{ secrets.GOOGLE_CLIENT_ID }}
         GoogleCredentials.client_secret: ${{ secrets.GOOGLE_CLIENT_SECRET }}
-    - name: Build
-      run: dotnet build --no-restore
-    - name: configure aws credentials
-      uses: aws-actions/configure-aws-credentials@v1
-      with:
-        role-to-assume: arn:aws:iam::016551291133:role/GithubActionsOIDC-Role-JTOVKGTXL79V
-        role-duration-seconds: 900
-        aws-region: us-east-1
     - name: Publish
       run: dotnet lambda deploy-serverless --stack-name do-one-thing-AspNetCoreFunction-YVIiAq7AVvBZ --s3-bucket jason_kochel --template serverless.template --region us-east-1
   
