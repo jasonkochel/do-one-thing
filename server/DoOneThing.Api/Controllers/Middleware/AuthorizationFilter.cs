@@ -78,7 +78,6 @@ namespace DoOneThing.Api.Controllers.Middleware
             User,
             Admin
         }
-
     }
 
     public class RequestHeaders

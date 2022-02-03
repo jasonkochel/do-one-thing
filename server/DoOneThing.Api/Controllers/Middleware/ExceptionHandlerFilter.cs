@@ -12,7 +12,8 @@ namespace DoOneThing.Api.Controllers.Middleware
         {
             context.Result = new ContentResult
             {
-                Content = JsonConvert.SerializeObject(new { title = context.Exception.MessageStack() }),
+                Content = JsonConvert.SerializeObject(new
+                    { message = context.Exception.MessageStack(), stack = context.Exception.StackTrace }),
                 ContentType = "application/json; charset=UTF-8",
                 StatusCode = context.Exception is ApiException e
                     ? (int)e.StatusCode
