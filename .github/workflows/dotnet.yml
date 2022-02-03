@@ -38,5 +38,5 @@ jobs:
         GoogleCredentials.client_id: ${{ secrets.GOOGLE_CLIENT_ID }}
         GoogleCredentials.client_secret: ${{ secrets.GOOGLE_CLIENT_SECRET }}
     - name: Publish
-      run: dotnet lambda deploy-serverless --stack-name do-one-thing-AspNetCoreFunction-YVIiAq7AVvBZ --s3-bucket jason_kochel --template serverless.template --region us-east-1
+      run: dotnet lambda deploy-serverless --stack-name do-one-thing-AspNetCoreFunction --s3-bucket jason_kochel --template serverless.template --region us-east-1
   
