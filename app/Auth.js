@@ -13,8 +13,6 @@ const redirectUri = AuthSession.makeRedirectUri({ useProxy: true });
 const authConfig = {
   expoClientId: Constants.manifest.extra.webClientId,
   webClientId: Constants.manifest.extra.webClientId,
-  //iosClientId: "GOOGLE_GUID.apps.googleusercontent.com",
-  //androidClientId: "GOOGLE_GUID.apps.googleusercontent.com",
   responseType: "code",
   prompt: "consent",
   scopes: ["https://www.googleapis.com/auth/tasks"],

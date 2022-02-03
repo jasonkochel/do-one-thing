@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Net;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
@@ -11,11 +10,9 @@ namespace DoOneThing.Api.Controllers.Middleware
     {
         public override void OnException(ExceptionContext context)
         {
-            Debug.Print($"Exception: {context.Exception.Message}");
-
             context.Result = new ContentResult
             {
-                Content = JsonConvert.SerializeObject(new { title = context.Exception.Message }),
+                Content = JsonConvert.SerializeObject(new { title = context.Exception.MessageStack() }),
                 ContentType = "application/json; charset=UTF-8",
                 StatusCode = context.Exception is ApiException e
                     ? (int)e.StatusCode
@@ -70,4 +67,22 @@ namespace DoOneThing.Api.Controllers.Middleware
             StatusCode = HttpStatusCode.InternalServerError;
         }
     }
+
+    public static class ExceptionExtensions
+    {
+        public static string MessageStack(this Exception e)
+        {
+            var message = "";
+
+            var ex = e;
+            while (ex != null)
+            {
+                message += ex.Message + " ";
+                ex = ex.InnerException;
+            }
+
+            return message;
+        }
+    }
 }
+
